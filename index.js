@@ -124,7 +124,7 @@ app.get("/free-endpoint", (request, response) => {
 app.get("/auth-endpoint", auth,(request, response) => {
   response.json({ message: "You are authorized to access me" });
 });
-
+//jjjjj
 
 app.use((req,res,next)=>{
     res.setHeaders("Access control Allow-Orgin","*")
