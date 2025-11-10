@@ -3,15 +3,30 @@ const User = require("./db/usermodule")
 const dotenv = require("dotenv")
 const bcrypt = require("bcryptjs")
 const express = require("express")
+const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const auth = require("./auth")
 
+dbconnect();
 dotenv.config()
 
 
 const app = express()
 
 app.use(express.json())
+
+app.use(cors())
+
+
+// Get all users
+app.get("/register/getdata", async (req, res) => {
+  try {
+    const users = await User.find({}, "-password");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users", error });
+  }
+});
 
 // register endpoint
 app.post("/register", (request, response) => {
@@ -127,7 +142,7 @@ app.get("/auth-endpoint", auth,(request, response) => {
 //jjjjj
 
 app.use((req,res,next)=>{
-    res.setHeaders("Access control Allow-Orgin","*")
+    res.setHeader("Access control Allow-Orgin","*")
     res.setHeader(
         "Access-Control-Allow-Headers",
         "Orgin,X-Requested-With,Content,Accept,Content-Type,Authorization"
@@ -148,4 +163,3 @@ app.listen(PORT, () => {
 
 
 
-dbconnect();
